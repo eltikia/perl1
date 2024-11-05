@@ -9,6 +9,7 @@
  * 
  */
 
+#include <stdlib.h>
 #include <signal.h>
 #include <errno.h> /* PERL1: needed for errno declaration */
 #include "handy.h"
@@ -17,6 +18,7 @@
 #include "util.h"
 #include "perl.h"
 
+void sighandler(int);
 
 static char *sig_name[] = {
     "",
@@ -161,13 +163,25 @@ STAB *stab;
     return stab->stab_val;
 }
 
+int
+whichsig(signame)
+char *signame;
+{
+    register char **sigv;
+
+    for (sigv = sig_name+1; *sigv; sigv++)
+	if (strEQ(signame,*sigv))
+	    return sigv - sig_name;
+    return 0;
+}
+
+void
 stabset(stab,str)
 register STAB *stab;
 STR *str;
 {
     char *s;
     int i;
-    int sighandler();
 
     if (stab->stab_flags & SF_VMAGIC) {
 	switch (stab->stab_name[0]) {
@@ -242,7 +256,7 @@ STR *str;
 	}
     }
     else if (stab == envstab && envname) {
-	setenv(envname,str_get(str));
+	perl_setenv(envname,str_get(str));
 				/* And you'll never guess what the dog had */
 	safefree(envname);	/*   in its mouth... */
 	envname = Nullch;
@@ -261,17 +275,7 @@ STR *str;
     }
 }
 
-whichsig(signame)
-char *signame;
-{
-    register char **sigv;
-
-    for (sigv = sig_name+1; *sigv; sigv++)
-	if (strEQ(signame,*sigv))
-	    return sigv - sig_name;
-    return 0;
-}
-
+void
 sighandler(sig)
 int sig;
 {

@@ -27,7 +27,11 @@ char *filename;
 char e_tmpname[] = "/tmp/perl-eXXXXXX"; /* PERL1: changed from (char *) to (char[]) because it is modified by mktemp(3) */
 FILE *e_fp = Nullfp;
 ARG *l();
+void spat_free(register SPAT *);
+void magicalize(register char *);
+void arg_free(register ARG *);
 
+int
 main(argc,argv,env)
 register int argc;
 register char **argv;
@@ -54,7 +58,7 @@ register char **env;
 #endif
 	case 'e':
 	    if (!e_fp) {
-		mktemp(e_tmpname);
+		mkstemp(e_tmpname);
 		e_fp = fopen(e_tmpname,"w");
 	    }
 	    if (argv[1])
@@ -189,9 +193,13 @@ register char **env;
 
     magicalize("!#?^~=-%0123456789.+&*(),\\/[|");
 
-    (tmpstab = stabent("0",allstabs)) && str_set(STAB_STR(tmpstab),filename);
-    (tmpstab = stabent("$",allstabs)) &&
+    if (tmpstab = stabent("0",allstabs)) {
+	    str_set(STAB_STR(tmpstab),filename);
+    }
+
+    if ((tmpstab = stabent("$",allstabs))) {
 	str_numset(STAB_STR(tmpstab),(double)getpid());
+    }
 
     tmpstab = stabent("stdin",TRUE);
     tmpstab->stab_io = stio_new();
@@ -225,8 +233,10 @@ register char **env;
     if (goto_targ)
 	fatal("Can't find label \"%s\"--aborting.\n",goto_targ);
     exit(0);
+    return 0;
 }
 
+void
 magicalize(list)
 register char *list;
 {
@@ -253,6 +263,7 @@ register char *list;
 #define FUN3(f) return (yylval.ival = f,expectterm = FALSE,bufptr = s,FUNC3)
 #define SFUN(f) return (yylval.ival = f,expectterm = FALSE,bufptr = s,STABFUN)
 
+int
 yylex()
 {
     register char *s = bufptr;
@@ -1372,6 +1383,7 @@ int fliporflop;
 
 ARG *
 mod_match(type,left,pat)
+register int type;
 register ARG *left;
 register ARG *pat;
 {
@@ -1485,6 +1497,7 @@ register CMD *cmd;
     return cmd;
 }
 
+void
 yyerror(s)
 char *s;
 {
@@ -2149,6 +2162,8 @@ register ARG *arg;
 
 ARG *
 addflags(i,flags,arg)
+register int i;
+register int flags;
 register ARG *arg;
 {
     arg[i].arg_flags |= flags;
@@ -2524,6 +2539,7 @@ STR *str;
     return str;
 }
 
+void
 cmd_free(cmd)
 register CMD *cmd;
 {
@@ -2546,11 +2562,11 @@ register CMD *cmd;
 	    if (cmd->ucmd.ccmd.cc_true)
 		cmd_free(cmd->ucmd.ccmd.cc_true);
 	    if (cmd->c_type == C_IF && cmd->ucmd.ccmd.cc_alt)
-		cmd_free(cmd->ucmd.ccmd.cc_alt,Nullcmd);
+		cmd_free(cmd->ucmd.ccmd.cc_alt);
 	    break;
 	case C_EXPR:
 	    if (cmd->ucmd.acmd.ac_stab)
-		arg_free(cmd->ucmd.acmd.ac_stab);
+		arg_free((ARG *)cmd->ucmd.acmd.ac_stab);
 	    if (cmd->ucmd.acmd.ac_expr)
 		arg_free(cmd->ucmd.acmd.ac_expr);
 	    break;
@@ -2563,6 +2579,7 @@ register CMD *cmd;
     }
 }
 
+void
 arg_free(arg)
 register ARG *arg;
 {
@@ -2599,6 +2616,7 @@ register ARG *arg;
     free_arg(arg);
 }
 
+void
 spat_free(spat)
 register SPAT *spat;
 {

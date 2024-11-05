@@ -23,7 +23,7 @@ struct string {
 
 /* the following macro updates any magic values this str is associated with */
 
-#define STABSET(x) (x->str_link.str_magic && stabset(x->str_link.str_magic,x))
+#define STABSET(x) if (x->str_link.str_magic) { stabset(x->str_link.str_magic,x); }
 
 EXT STR **tmps_list;
 EXT long tmps_max INIT(-1);
@@ -33,3 +33,18 @@ double str_2num();
 STR *str_static();
 STR *str_make();
 STR *str_nmake();
+int str_len(register STR *);
+void str_ncat(register STR *, register char *, register int);
+void str_scat(STR *, register STR *);
+void str_cat(register STR *, register char *);
+void str_replace(register STR *, register STR *);
+void str_nset(register STR *, register char *, register int);
+void str_set(register STR *, register char *);
+void str_sset(STR *, register STR *);
+void str_numset(register STR *, double);
+void str_inc(register STR *);
+void str_dec(register STR *);
+void str_chop(register STR *, register char *);
+void str_grow(register STR *, int);
+void str_reset(register char *);
+

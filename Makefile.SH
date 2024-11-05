@@ -45,7 +45,7 @@ LARGE = $large $split
 mallocsrc = $mallocsrc
 mallocobj = $mallocobj
 
-libs = $libnm -lm
+libs = $libnm -lm -lcrypt
 !GROK!THIS!
 
 cat >>Makefile <<'!NO!SUBS!'

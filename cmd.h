@@ -111,7 +111,7 @@ struct cmd {
 EXT CMD *main_root INIT(Nullcmd);
 EXT CMD *eval_root INIT(Nullcmd);
 
-EXT struct compcmd {
+struct compcmd {
     CMD *comp_true;
     CMD *comp_alt;
 };
@@ -124,3 +124,6 @@ struct compcmd Nullccmd = {Nullcmd, Nullcmd};
 void opt_arg();
 void evalstatic();
 STR *cmd_exec();
+void deb(char *pat, ...);
+int copyopt(register CMD *, register CMD *);
+

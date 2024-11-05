@@ -20,3 +20,7 @@ STR *ashift();
 bool apush();
 long alen();
 ARRAY *anew();
+void aunshift(register ARRAY *, register int);
+void afree(register ARRAY *);
+void ajoin(register ARRAY *, char *, register STR *);
+

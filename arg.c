@@ -19,6 +19,8 @@
  */
 
 #include <signal.h>
+#include <stdlib.h>
+#include <sys/wait.h>
 #include "handy.h"
 #include "EXTERN.h"
 #include "search.h"
@@ -513,6 +515,7 @@ int whence;
     return fseek(stio->fp, pos, whence) >= 0;
 }
 
+int
 do_stat(arg,sarg,retary)
 register ARG *arg;
 register STR **sarg;
@@ -569,6 +572,7 @@ STR ***retary;
     return max;
 }
 
+int
 do_tms(retary)
 STR ***retary;
 {
@@ -602,6 +606,7 @@ STR ***retary;
     return max;
 }
 
+int
 do_time(tmbuf,retary)
 struct tm *tmbuf;
 STR ***retary;
@@ -846,6 +851,7 @@ register ARRAY *ary;
     return str;
 }
 
+void
 do_unshift(arg,ary)
 register ARG *arg;
 register ARRAY *ary;
@@ -869,6 +875,7 @@ register ARRAY *ary;
     safefree((char*)tmpary);
 }
 
+int
 apply(type,arg,sarg)
 int type;
 register ARG *arg;
@@ -932,7 +939,7 @@ STR **sarg;
 STR *
 do_subr(arg,sarg)
 register ARG *arg;
-register char **sarg;
+register STR **sarg;
 {
     ARRAY *savearray;
     STR *str;
@@ -1085,6 +1092,7 @@ STR ***retary;
     return retstr;
 }
 
+void
 init_eval()
 {
     register int i;
@@ -1573,7 +1581,7 @@ STR ***retary;		/* where to return an array to, null if nowhere */
     case O_OR:
 	if (str_true(sarg[1])) {
 	    if (assigning) {
-		str_set(str, sarg[1]);
+		str_set(str, str_get(sarg[1]));
 		STABSET(str);
 	    }
 	    else
@@ -2129,7 +2137,7 @@ freeargs:
 	    *retary = sarg;	/* up to them to free it */
 	}
 	else
-	    safefree(sarg);
+	    safefree((char *)sarg);
     }
     return str;
 

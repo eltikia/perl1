@@ -9,13 +9,15 @@
  * 
  */
 
+
+#include <stdarg.h>
 #include "handy.h"
 #include "EXTERN.h"
 #include "search.h"
 #include "util.h"
 #include "perl.h"
 
-static STR str_chop;
+static STR str_chop_ret_value;
 
 /* This is the main command loop.  We try to spend as much time in this loop
  * as possible, so lots of optimizations do their activities in here.  This
@@ -271,11 +273,11 @@ until_loop:
 	    match = (retstr->str_cur != 0);
 	    tmps = str_get(retstr);
 	    tmps += retstr->str_cur - match;
-	    str_set(&str_chop,tmps);
+	    str_set(&str_chop_ret_value,tmps);
 	    *tmps = '\0';
 	    retstr->str_nok = 0;
 	    retstr->str_cur = tmps - retstr->str_ptr;
-	    retstr = &str_chop;
+	    retstr = &str_chop_ret_value;
 	    goto flipmaybe;
 	}
 
@@ -435,17 +437,20 @@ until_loop:
 
 #ifdef DEBUGGING
 /*VARARGS1*/
-deb(pat,a1,a2,a3,a4,a5,a6,a7,a8)
-char *pat;
+void deb(char *pat, ...)
 {
     register int i;
+    va_list argptr;
 
+    va_start(argptr, pat);
     for (i=0; i<dlevel; i++)
 	fprintf(stderr,"%c%c ",debname[i],debdelim[i]);
-    fprintf(stderr,pat,a1,a2,a3,a4,a5,a6,a7,a8);
+    vfprintf(stderr, pat, argptr);
+    va_end(argptr);
 }
 #endif
 
+int
 copyopt(cmd,which)
 register CMD *cmd;
 register CMD *which;

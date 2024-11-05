@@ -13,6 +13,8 @@
 #include "search.h"
 #include "perl.h"
 
+void hsplit(HASH *);
+
 STR *
 hfetch(tb,key)
 register HASH *tb;
@@ -130,6 +132,7 @@ char *key;
 }
 #endif
 
+void
 hsplit(tb)
 HASH *tb;
 {
@@ -191,6 +194,7 @@ register HASH *tb;
 }
 #endif
 
+int
 hiterinit(tb)
 register HASH *tb;
 {

@@ -56,3 +56,5 @@ EXT int subsvalue;
 
 STAB *aadd();
 STAB *hadd();
+void stabset(register STAB *, STR *);
+

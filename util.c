@@ -10,6 +10,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "handy.h"
 #include "EXTERN.h"
@@ -32,7 +33,6 @@ safemalloc(size)
 MEM_SIZE size;
 {
     char *ptr;
-    char *malloc();
 
     ptr = malloc(size?size:1);	/* malloc(0) is NASTY on our system */
 #ifdef DEBUGGING
@@ -56,7 +56,6 @@ char *where;
 MEM_SIZE size;
 {
     char *ptr;
-    char *realloc();
 
     ptr = realloc(where,size?size:1);	/* realloc(0) is NASTY on our system */
 #ifdef DEBUGGING
@@ -76,6 +75,7 @@ MEM_SIZE size;
 
 /* safe version of free */
 
+void
 safefree(where)
 char *where;
 {
@@ -205,6 +205,7 @@ int newlen;
 /*fatal(pat,a1,a2,a3,a4)*/ /* PERL1: use stdarg for fatal() */
 /*char *pat; */            /* PERL1: use stdarg for fatal() */
 #include <stdarg.h>        /* PERL1: use stdarg for fatal() */
+void
 fatal(char *pat,...)       /* PERL1: use stdarg for fatal() */
 {
     extern FILE *e_fp;
@@ -230,7 +231,7 @@ static bool firstsetenv = TRUE;
 extern char **environ;
 
 void
-setenv(nam,val)
+perl_setenv(nam,val)
 char *nam, *val;
 {
     register int i=envix(nam);		/* where does it go? */

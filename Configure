@@ -91,7 +91,7 @@ medium=''
 large=''
 huge=''
 ccflags=''
-ldflags=''
+ldflags='-lcrypt'
 n=''
 c=''
 package=''
@@ -114,7 +114,7 @@ echo " "
 
 define='define'
 undef='/*undef'
-libpth='/usr/lib /usr/local/lib /lib'
+libpth='/usr/lib /usr/local/lib /lib /usr/lib/x86_64-linux-gnu'
 smallmach='pdp11 i8086 z8000 i80286 iAPX286'
 rmlist='kit[1-9]isdone kit[1-9][0-9]isdone'
 trap 'echo " "; rm -f $rmlist; exit 1' 1 2 3

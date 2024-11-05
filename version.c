@@ -6,10 +6,12 @@
  * 
  */
 
+#include <stdio.h>
 #include "patchlevel.h"
 
 /* Print out the version number. */
 
+void
 version()
 {
     extern char rcsid[];

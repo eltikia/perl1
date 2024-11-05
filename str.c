@@ -51,6 +51,7 @@ register char *s;
     }
 }
 
+void
 str_numset(str,num)
 register STR *str;
 double num;
@@ -102,6 +103,7 @@ register STR *str;
     return str->str_nval;
 }
 
+void
 str_sset(dstr,sstr)
 STR *dstr;
 register STR *sstr;
@@ -116,6 +118,7 @@ register STR *sstr;
 	str_nset(dstr,"",0);
 }
 
+void
 str_nset(str,ptr,len)
 register STR *str;
 register char *ptr;
@@ -129,6 +132,7 @@ register int len;
     str->str_pok = 1;		/* validate pointer */
 }
 
+void
 str_set(str,ptr)
 register STR *str;
 register char *ptr;
@@ -145,6 +149,7 @@ register char *ptr;
     str->str_pok = 1;		/* validate pointer */
 }
 
+void
 str_chop(str,ptr)	/* like set but assuming ptr is in str */
 register STR *str;
 register char *ptr;
@@ -157,6 +162,7 @@ register char *ptr;
     str->str_pok = 1;		/* validate pointer */
 }
 
+void
 str_ncat(str,ptr,len)
 register STR *str;
 register char *ptr;
@@ -172,6 +178,7 @@ register int len;
     str->str_pok = 1;		/* validate pointer */
 }
 
+void
 str_scat(dstr,sstr)
 STR *dstr;
 register STR *sstr;
@@ -301,6 +308,7 @@ register STR *str;
     freestrroot = str;
 }
 
+int
 str_len(str)
 register STR *str;
 {

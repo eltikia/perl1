@@ -18,6 +18,8 @@
  * 
  */
 
+#include <unistd.h>
+
 #define DEBUGGING
 
 #define VOIDUSED 1
@@ -109,7 +111,7 @@ ARG *make_split();
 ARG *flipflip();
 
 STR *arg_to_str();
-STR *str_new();
+STR *str_new(int);
 STR *stab_str();
 STR *eval();		/* this evaluates expressions */
 STR *do_eval();		/* this evaluates eval operator */
@@ -137,15 +139,6 @@ void freearg();
 
 EXT int line INIT(0);
 EXT int arybase INIT(0);
-
-struct outrec {
-    int o_lines;
-    char *o_str;
-    int o_len;
-};
-
-EXT struct outrec outrec;
-EXT struct outrec toprec;
 
 EXT STAB *last_in_stab INIT(Nullstab);
 EXT STAB *defstab INIT(Nullstab);
@@ -219,3 +212,13 @@ struct tm *gmtime(), *localtime();
 #else
 #define UNLINK unlink
 #endif
+
+void arg_free(register ARG *);
+void cmd_free(register CMD *);
+void version();
+
+#ifdef DEBUGGING
+void dump_arg(register ARG *);
+void dump_cmd(register CMD *, register CMD *);
+#endif
+

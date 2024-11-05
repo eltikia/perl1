@@ -36,3 +36,7 @@ void	notincl();
 char	*getval();
 void	growstr();
 void	setdef();
+void	fatal(char *pat,...);
+void safefree(char *);
+void perl_setenv(char *, char *);
+

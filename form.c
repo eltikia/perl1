@@ -12,6 +12,8 @@
 #include "util.h"
 #include "perl.h"
 
+int countlines(register char *);
+
 /* Forms stuff */
 
 #define CHKLEN(allow) \
@@ -22,6 +24,7 @@ if (d - orec->o_str + (allow) >= curlen) { \
     curlen = orec->o_len - 2; \
 }
 
+void
 format(orec,fcmd)
 register struct outrec *orec;
 register FCMD *fcmd;
@@ -220,6 +223,7 @@ register FCMD *fcmd;
     *d++ = '\0';
 }
 
+int
 countlines(s)
 register char *s;
 {
@@ -232,6 +236,7 @@ register char *s;
     return count;
 }
 
+void
 do_write(orec,stio)
 struct outrec *orec;
 register STIO *stio;

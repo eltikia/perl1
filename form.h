@@ -27,3 +27,16 @@ struct formcmd {
 #define FC_MORE 4
 
 #define Nullfcmd Null(FCMD*)
+
+struct outrec {
+    int o_lines;
+    char *o_str;
+    int o_len;
+};
+
+EXT struct outrec outrec;
+EXT struct outrec toprec;
+
+void do_write(struct outrec *, register STIO *);
+void format(register struct outrec *, register FCMD *);
+
