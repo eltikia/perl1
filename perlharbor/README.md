@@ -23,8 +23,8 @@ owned by stagyrite
 
 ## Proof of concept
 
-* [Concept #1](CONCEPT.1.md "Concept")
-* [Concept #2](CONCEPT.2.md "Concept")
+* [Concept #1](CONCEPT.1 "Concept")
+* [Concept #2](CONCEPT.2 "Concept")
 
 ⚛🍅🦅🦅
 
